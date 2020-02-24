@@ -3,6 +3,7 @@ package Projeto.resources;
 import Projeto.domain.Cliente;
 import Projeto.domain.Cliente;
 import Projeto.dto.ClienteDTO;
+import Projeto.dto.ClienteNewDTO;
 import Projeto.service.ClienteService;
 import Projeto.service.ClienteService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,7 +29,7 @@ public class ClienteResouce {
 
         }
     @RequestMapping(method = RequestMethod.POST)
-    public ResponseEntity<Void> insert (@Valid @RequestBody ClienteDTO objDto){
+    public ResponseEntity<Void> insert (@Valid @RequestBody ClienteNewDTO objDto){
         Cliente obj = service.fromDTO(objDto);
         obj = service.update(obj);
         URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}")

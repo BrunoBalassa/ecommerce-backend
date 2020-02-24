@@ -34,6 +34,11 @@ public class CategoriaService {
         return repo.save(newObj);
     }
 
+    public Categoria insert(Categoria obj){
+        obj.setId(null);
+        return repo.save(obj);
+    }
+
     public void delete(Integer id){
         find(id);
         try {
