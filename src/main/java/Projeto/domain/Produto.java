@@ -20,6 +20,7 @@ public class Produto implements Serializable {
     private Double preco;
 
 
+    @JsonIgnore
     @ManyToMany
     @JoinTable(
             name = "PRODUTO_CATEGORIA",
@@ -42,12 +43,12 @@ public class Produto implements Serializable {
         this.preco = preco;
     }
     @JsonIgnore
-    public List<Pedido> getPedidos(){
-        List<Pedido>  list = new ArrayList<>();
-        for(ItemPedido x : itens){
-            list.add(x.getPedido());
+    public List<Pedido> getPedidos() {
+        List<Pedido> lista = new ArrayList<>();
+        for (ItemPedido x : itens) {
+            lista.add(x.getPedido());
         }
-        return list;
+        return lista;
     }
     public Set<ItemPedido> getItens() {
         return itens;
@@ -95,7 +96,7 @@ public class Produto implements Serializable {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Produto produto = (Produto) o;
-        return Objects.equals(id, produto.id);
+        return id.equals(produto.id);
     }
 
     @Override

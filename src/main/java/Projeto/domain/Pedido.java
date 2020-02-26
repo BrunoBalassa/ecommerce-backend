@@ -48,6 +48,13 @@ public class Pedido implements Serializable {
         this.enderecoDeEntrega = enderecoDeEntrega;
     }
 
+    public double getValorTotal(){
+        double sum = 0;
+        for(ItemPedido p : itens){
+            sum += p.getSubTotal();
+        }
+        return  sum;
+    }
     public Set<ItemPedido> getItens() {
         return itens;
     }

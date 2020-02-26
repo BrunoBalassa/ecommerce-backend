@@ -14,13 +14,13 @@ public class CategoriaDTO implements Serializable {
 
     @NotEmpty(message = "Preenchimento Obrigatorio")
     @Length(min = 5,max = 80,message = "Min 5 maximo 80")
-    private String name;
+    private String nome;
 
     public CategoriaDTO(){}
 
     public CategoriaDTO(Categoria obj){
         id = obj.getId();
-        name = obj.getNome();
+        nome = obj.getNome();
     }
 
     public Integer getId() {
@@ -31,11 +31,11 @@ public class CategoriaDTO implements Serializable {
         this.id = id;
     }
 
-    public String getName() {
-        return name;
+    public String getnome() {
+        return nome;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public void setnome(String nome) {
+        this.nome = nome;
     }
 }
