@@ -14,9 +14,9 @@ public class SmtpEmailService extends AbstratcEmailService {
     private static final Logger LOG = LoggerFactory.getLogger(SmtpEmailService.class);
     @Override
     public void SendEmail(SimpleMailMessage msg) {
-        LOG.info("Simulando envio de Email...");
+        LOG.info("enviando email");
         mailSender.send(msg);
-        LOG.info("Email enviado");
+        LOG.info("Email enviando");
 
     }
 }

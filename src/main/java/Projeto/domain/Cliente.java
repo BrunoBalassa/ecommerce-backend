@@ -23,6 +23,9 @@ public class Cliente implements Serializable {
     private String cpfOuCnpj;
     private Integer tipo;
 
+    @JsonIgnore
+    private String senha;
+
 
 
     @JsonIgnore
@@ -41,12 +44,21 @@ public class Cliente implements Serializable {
 
     public Cliente(){}
 
-    public Cliente(Integer id, String name, String email, String cpfOuCnpj, TipoCliente tipo) {
+    public Cliente(Integer id, String name, String email, String cpfOuCnpj, TipoCliente tipo, String senha) {
         this.id = id;
         this.name = name;
         this.email = email;
         this.cpfOuCnpj = cpfOuCnpj;
         this.tipo = (tipo == null ) ? null : tipo.getCod();
+        this.senha = senha;
+    }
+
+    public String getSenha() {
+        return senha;
+    }
+
+    public void setSenha(String senha) {
+        this.senha = senha;
     }
 
     public Integer getId() {
