@@ -4,6 +4,7 @@ import Projeto.domain.Cidade;
 import Projeto.domain.Cliente;
 import Projeto.domain.Cliente;
 import Projeto.domain.Endereco;
+import Projeto.domain.enums.Perfil;
 import Projeto.domain.enums.TipoCliente;
 import Projeto.dto.ClienteDTO;
 import Projeto.dto.ClienteNewDTO;
@@ -11,6 +12,8 @@ import Projeto.repositories.CidadeRepository;
 import Projeto.repositories.ClienteRepository;
 import Projeto.repositories.ClienteRepository;
 import Projeto.repositories.EnderecoRepository;
+import Projeto.security.UserSS;
+import Projeto.service.execptions.AuthorizationExeception;
 import Projeto.service.execptions.DataIntegrituExcepetion;
 import Projeto.service.execptions.ObjectNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -35,6 +38,10 @@ public class ClienteService {
     @Autowired
     private BCryptPasswordEncoder pe;
     public Cliente find(Integer id){
+        UserSS user = UserService.authenticated();
+        if(user == null || ! user.hasRole(Perfil.ADMIN) && ! id.equals(user.getId())){
+            throw  new AuthorizationExeception("Acesso negado");
+        }
           Optional<Cliente> obj = repo.findById(id);
           return obj.orElseThrow(() ->
                   new ObjectNotFoundException("Objeto não encontrado! Id: "+ id + ", Tipo " +

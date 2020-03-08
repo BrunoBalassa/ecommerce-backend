@@ -1,5 +1,6 @@
 package Projeto.resources.excepetion;
 
+import Projeto.service.execptions.AuthorizationExeception;
 import Projeto.service.execptions.DataIntegrituExcepetion;
 import Projeto.service.execptions.ObjectNotFoundException;
 import org.springframework.http.HttpStatus;
@@ -34,5 +35,10 @@ public class ResourceExceptionHandler  {
             err.addError(x.getField(), x.getDefaultMessage());
         }
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(err);
+    }
+    @ExceptionHandler(AuthorizationExeception.class)
+    public ResponseEntity<StandardError> authorization(AuthorizationExeception e, HttpServletRequest request){
+        StandardError err = new StandardError(HttpStatus.FORBIDDEN.value(), e.getMessage(), System.currentTimeMillis());
+        return ResponseEntity.status(HttpStatus.FORBIDDEN).body(err);
     }
 }
