@@ -210,6 +210,7 @@ private BCryptPasswordEncoder pe;
 
         clienteRepository.saveAll(Arrays.asList(cli1, cli2,cli3));
         enderecoRepository.saveAll(Arrays.asList(e1, e2, e3));
+        enderecoRepository.saveAll(Arrays.asList(e1, e2, e3));
 
         SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy HH:mm");
 
