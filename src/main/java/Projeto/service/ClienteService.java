@@ -2,14 +2,11 @@ package Projeto.service;
 
 import Projeto.domain.Cidade;
 import Projeto.domain.Cliente;
-import Projeto.domain.Cliente;
 import Projeto.domain.Endereco;
 import Projeto.domain.enums.Perfil;
 import Projeto.domain.enums.TipoCliente;
 import Projeto.dto.ClienteDTO;
 import Projeto.dto.ClienteNewDTO;
-import Projeto.repositories.CidadeRepository;
-import Projeto.repositories.ClienteRepository;
 import Projeto.repositories.ClienteRepository;
 import Projeto.repositories.EnderecoRepository;
 import Projeto.security.UserSS;
@@ -17,6 +14,7 @@ import Projeto.service.execptions.AuthorizationExeception;
 import Projeto.service.execptions.DataIntegrituExcepetion;
 import Projeto.service.execptions.ObjectNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -25,6 +23,8 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
+
+import java.awt.image.BufferedImage;
 import java.net.URI;
 import java.util.List;
 import java.util.Optional;
@@ -42,6 +42,13 @@ public class ClienteService {
 
     @Autowired
     private S3Service s3Service;
+
+    @Autowired
+    private ImageService imageService;
+
+    @Value("{$/img.prefix.client.profile}")
+    private String prefix;
+
     public Cliente find(Integer id){
         UserSS user = UserService.authenticated();
         if(user == null || ! user.hasRole(Perfil.ADMIN) && ! id.equals(user.getId())){
@@ -106,7 +113,17 @@ public class ClienteService {
         newObj.setName(obj.getName());
         newObj.setEmail(obj.getEmail());
     }
+
     public URI uploadProfilePicture(MultipartFile multipartFile){
-        return s3Service.uploadFile(multipartFile);
+        UserSS user = UserService.authenticated();
+        if(user == null){
+            throw  new AuthorizationExeception("Acesso negado");
+        }
+        BufferedImage jpgImage = imageService.getJpgImageFromFile(multipartFile);
+        String fileName = prefix + user.getId() + ".jpg";
+        return s3Service.uploadFile(imageService.getInputStream(jpgImage, "jpg"), fileName, "Image");
+
+
     }
+
 }
