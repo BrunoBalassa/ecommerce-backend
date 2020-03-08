@@ -1,5 +1,6 @@
 package Projeto.service;
 
+import Projeto.domain.Cliente;
 import Projeto.domain.Pedido;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.mail.SimpleMailMessage;
@@ -25,5 +26,20 @@ public abstract class AbstratcEmailService  implements EmailService{
             sm.setSentDate(new Date(System.currentTimeMillis()));
             sm.setText(obj.toString());
             return sm;
+    }
+    @Override
+    public void sendNewPasswordEmail(Cliente cliente, String newPass){
+        SimpleMailMessage sm = prepareNewPasswordEmail(cliente, newPass);
+        SendEmail(sm);
+    }
+
+    protected  SimpleMailMessage prepareNewPasswordEmail(Cliente cliente, String newPass){
+        SimpleMailMessage sm = new SimpleMailMessage();
+        sm.setTo(cliente.getEmail());
+        sm.setFrom(sender);
+        sm.setSubject("Solicitação de nova senha");
+        sm.setSentDate(new Date(System.currentTimeMillis()));
+        sm.setText("Nova senha" + newPass);
+        return sm;
     }
 }

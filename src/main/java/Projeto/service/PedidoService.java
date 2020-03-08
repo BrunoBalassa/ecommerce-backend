@@ -3,12 +3,18 @@ package Projeto.service;
 import Projeto.domain.*;
 import Projeto.domain.enums.EstadoPagamento;
 import Projeto.repositories.*;
+import Projeto.security.UserSS;
+import Projeto.service.execptions.AuthorizationExeception;
 import Projeto.service.execptions.ObjectNotFoundException;
 import ch.qos.logback.core.net.SyslogOutputStream;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import javax.naming.AuthenticationException;
 import java.util.Date;
 import java.util.Optional;
 
@@ -66,6 +72,15 @@ public class PedidoService {
         emailService.sendOrderConfirmationEmail(obj);
 
         return obj;
+    }
+    public Page<Pedido> findPage(Integer page, Integer linesPerPage, String orderBy, String direction) {
+        UserSS user = UserService.authenticated();
+        if(user == null){
+            throw new AuthorizationExeception("Acesso negado");
+        }
+        PageRequest pageRequest = PageRequest.of(page, linesPerPage, Sort.Direction.valueOf(direction), orderBy);
+        Cliente cliente = clienteService.find(user.getId());
+        return pedido.findByCliente(cliente, pageRequest);
     }
 
 
