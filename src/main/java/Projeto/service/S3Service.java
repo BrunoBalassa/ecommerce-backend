@@ -1,6 +1,7 @@
 package Projeto.service;
 
 
+import Projeto.service.execptions.FileExeception;
 import com.amazonaws.AmazonClientException;
 import com.amazonaws.AmazonServiceException;
 import com.amazonaws.services.s3.AmazonS3;
@@ -39,7 +40,7 @@ public class S3Service {
         String contenType = multipartFile.getContentType();
         return uploadFile(is, fileName, contenType);
        }catch (IOException e){
-            throw new RuntimeException("ERRO de IO: "+ e.getMessage());
+            throw new FileExeception("ERRO de IO: "+ e.getMessage());
         }
     }
     public URI uploadFile(InputStream is, String fileName, String contentType){
@@ -51,7 +52,7 @@ public class S3Service {
             log.info("Finalizado");
             return s3client.getUrl(bucketName, fileName).toURI();
         } catch (URISyntaxException e) {
-            throw  new RuntimeException("Erro ao converter URL para URI");
+            throw  new FileExeception("Erro ao converter URL para URI");
         }
     }
 }
