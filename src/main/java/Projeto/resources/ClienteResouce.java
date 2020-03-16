@@ -1,10 +1,8 @@
 package Projeto.resources;
 
 import Projeto.domain.Cliente;
-import Projeto.domain.Cliente;
 import Projeto.dto.ClienteDTO;
 import Projeto.dto.ClienteNewDTO;
-import Projeto.service.ClienteService;
 import Projeto.service.ClienteService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -46,6 +44,12 @@ public class ClienteResouce {
         obj = service.update(obj);
         return ResponseEntity.noContent().build();
     }
+    @RequestMapping(value = "/email", method = RequestMethod.GET)
+        public ResponseEntity<Object> find(@RequestParam(value = "value") String email){
+            Cliente obj = service.finByEmail(email);
+                    return ResponseEntity.ok().body(obj);
+    }
+
     @PreAuthorize("hasAnyRole('ADMIN')")
     @RequestMapping(value = "/{id}", method = RequestMethod.DELETE)
     public ResponseEntity<Void> delete(@PathVariable Integer id){

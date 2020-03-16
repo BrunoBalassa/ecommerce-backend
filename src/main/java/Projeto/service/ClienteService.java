@@ -86,6 +86,20 @@ public class ClienteService {
         return repo.findAll();
     }
 
+    public Cliente finByEmail(String email){
+        UserSS user = UserService.authenticated();
+        if(user == null || !user.hasRole(Perfil.ADMIN) && !email.equals(user.getUsername())){
+            throw new AuthorizationExeception("Acesso negado");
+        }
+        Cliente obj = repo.findByEmail(email);
+        if(obj == null){
+            throw new ObjectNotFoundException("Objeto não encontrado! Id: " + user.getId()
+                    + ", Tipo: " + Cliente.class.getName());
+        }
+        return obj;
+
+    }
+
     public Page<Cliente> findPage(Integer page, Integer linesPerPage, String orderBy, String direction){
         PageRequest pageRequest = PageRequest.of(page, linesPerPage, Sort.Direction.fromString(direction),orderBy);
         return repo.findAll(pageRequest);
