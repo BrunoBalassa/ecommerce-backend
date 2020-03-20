@@ -1,16 +1,29 @@
 package Projeto.resources.excepetion;
 
-public class StandardError {
-    private Integer status;
-    private String msg;
+import java.io.Serializable;
+
+public class StandardError implements Serializable {
+    private static final long serialVersionUID = 1L;
     private Long timeStamp;
+    private Integer status;
+    private String error;
+    private String msg;
+    private String path;
 
-
-    public StandardError(Integer status, String msg, Long timeStamp) {
-        this.status = status;
-        this.msg = msg;
+    public StandardError(Long timeStamp, Integer status, String error, String msg, String path) {
         this.timeStamp = timeStamp;
+        this.status = status;
+        this.error = error;
+        this.msg = msg;
+        this.path = path;
+    }
 
+    public Long getTimeStamp() {
+        return timeStamp;
+    }
+
+    public void setTimeStamp(Long timeStamp) {
+        this.timeStamp = timeStamp;
     }
 
     public Integer getStatus() {
@@ -21,6 +34,14 @@ public class StandardError {
         this.status = status;
     }
 
+    public String getError() {
+        return error;
+    }
+
+    public void setError(String error) {
+        this.error = error;
+    }
+
     public String getMsg() {
         return msg;
     }
@@ -29,11 +50,11 @@ public class StandardError {
         this.msg = msg;
     }
 
-    public Long getTimeStamp() {
-        return timeStamp;
+    public String getPath() {
+        return path;
     }
 
-    public void setTimeStamp(Long timeStamp) {
-        this.timeStamp = timeStamp;
+    public void setPath(String path) {
+        this.path = path;
     }
 }
